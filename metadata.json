@@ -1,0 +1,5 @@
+{
+  "name": "Mergenimate",
+  "description": "An interactive tool to upload multiple images of the same dimensions and smoothly merge or transition between them using a slider.",
+  "requestFramePermissions": []
+}
