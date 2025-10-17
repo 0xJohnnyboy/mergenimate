@@ -65,6 +65,32 @@ export const ConfigForm: React.FC<ConfigFormProps> = ({ onGenerate, scriptError 
         />
         
         <div>
+            <span className="block text-sm font-medium mb-2">Output Format</span>
+            <div className="flex rounded-md shadow-sm mb-4">
+                <Controller
+                    name="framework"
+                    control={control}
+                    render={({ field }) => (
+                        <>
+                            <button type="button" onClick={() => field.onChange('script')} className={`relative inline-flex items-center justify-center px-4 py-2 rounded-l-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150 ${field.value === 'script' ? 'bg-primary border-primary text-primary-content' : 'bg-base-200 border-base-300 hover:bg-base-300'}`}>
+                            Script Tag
+                            </button>
+                            <button type="button" onClick={() => field.onChange('react')} className={`-ml-px relative inline-flex items-center justify-center px-4 py-2 border text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150 ${field.value === 'react' ? 'bg-primary border-primary text-primary-content' : 'bg-base-200 border-base-300 hover:bg-base-300'}`}>
+                            React
+                            </button>
+                            <button type="button" onClick={() => field.onChange('vue')} className={`-ml-px relative inline-flex items-center justify-center px-4 py-2 border text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150 ${field.value === 'vue' ? 'bg-primary border-primary text-primary-content' : 'bg-base-200 border-base-300 hover:bg-base-300'}`}>
+                            Vue
+                            </button>
+                            <button type="button" onClick={() => field.onChange('svelte')} className={`-ml-px relative inline-flex items-center justify-center px-4 py-2 rounded-r-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150 ${field.value === 'svelte' ? 'bg-primary border-primary text-primary-content' : 'bg-base-200 border-base-300 hover:bg-base-300'}`}>
+                            Svelte
+                            </button>
+                        </>
+                    )}
+                />
+            </div>
+        </div>
+
+        <div>
             <span className="block text-sm font-medium mb-2">Milestone Format</span>
             <div className="flex rounded-md shadow-sm">
                 <Controller
