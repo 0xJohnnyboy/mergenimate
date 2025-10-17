@@ -18,6 +18,7 @@ interface MerganimateProps {
   milestones?: number[];
   className?: string;
   isCycling?: boolean;
+  startAt?: string;
 }
 
 export const Mergenimate: React.FC<MerganimateProps> = ({
@@ -25,7 +26,8 @@ export const Mergenimate: React.FC<MerganimateProps> = ({
   duration = '${config.duration}',
   milestones = ${JSON.stringify(milestones)},
   className = '${config.className}',
-  isCycling = ${config.isCycling}
+  isCycling = ${config.isCycling},
+  startAt = '${config.startAt}'
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [aspectRatio, setAspectRatio] = useState<string>('16 / 9');
@@ -53,7 +55,7 @@ export const Mergenimate: React.FC<MerganimateProps> = ({
     const keyframes = [
       [0, 0],
       ...milestones.map((timePercent, index) => {
-        const sliderValue = ((index + 1) / milestones.length) * 100;
+        const sliderValue = ((index + 1) / (images.length - 1)) * 100;
         return [timePercent, sliderValue];
       }),
     ];
@@ -68,10 +70,25 @@ export const Mergenimate: React.FC<MerganimateProps> = ({
     firstImg.onload = () => {
       setAspectRatio(\`\${firstImg.naturalWidth} / \${firstImg.naturalHeight}\`);
 
+      // Calculate initial offset based on startAt
+      let initialOffsetMs = 0;
+      if (startAt) {
+        const percentMatch = startAt.match(/^(\\d+(\\.\\d+)?)%?$/);
+        if (percentMatch) {
+          const percent = parseFloat(percentMatch[1]);
+          initialOffsetMs = (percent / 100) * totalDuration;
+        } else {
+          const timeMs = parseDuration(startAt);
+          if (timeMs !== null) {
+            initialOffsetMs = timeMs;
+          }
+        }
+      }
+
       let startTime: number | null = null;
 
       const animate = (timestamp: number) => {
-        if (!startTime) startTime = timestamp;
+        if (!startTime) startTime = timestamp - initialOffsetMs;
         const elapsed = timestamp - startTime;
         const timePercent = ((elapsed % totalDuration) / totalDuration) * 100;
 
@@ -130,7 +147,7 @@ export const Mergenimate: React.FC<MerganimateProps> = ({
       });
     };
     firstImg.src = images[0];
-  }, [images, duration, milestones, isCycling]);
+  }, [images, duration, milestones, isCycling, startAt]);
 
   return (
     <div
@@ -154,7 +171,7 @@ export const Mergenimate: React.FC<MerganimateProps> = ({
             left: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'contain',
+            objectFit: 'cover',
             opacity: index === 0 ? 1 : 0
           }}
         />
@@ -176,6 +193,7 @@ interface Props {
   milestones?: number[];
   className?: string;
   isCycling?: boolean;
+  startAt?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -183,7 +201,8 @@ const props = withDefaults(defineProps<Props>(), {
   duration: '${config.duration}',
   milestones: () => ${JSON.stringify(milestones)},
   className: '${config.className}',
-  isCycling: ${config.isCycling}
+  isCycling: ${config.isCycling},
+  startAt: '${config.startAt}'
 });
 
 const containerRef = ref<HTMLDivElement | null>(null);
@@ -212,7 +231,7 @@ onMounted(() => {
   const keyframes = [
     [0, 0],
     ...props.milestones.map((timePercent, index) => {
-      const sliderValue = ((index + 1) / props.milestones.length) * 100;
+      const sliderValue = ((index + 1) / (props.images.length - 1)) * 100;
       return [timePercent, sliderValue];
     }),
   ];
@@ -227,10 +246,25 @@ onMounted(() => {
   firstImg.onload = () => {
     aspectRatio.value = \`\${firstImg.naturalWidth} / \${firstImg.naturalHeight}\`;
 
+    // Calculate initial offset based on startAt
+    let initialOffsetMs = 0;
+    if (props.startAt) {
+      const percentMatch = props.startAt.match(/^(\\d+(\\.\\d+)?)%?$/);
+      if (percentMatch) {
+        const percent = parseFloat(percentMatch[1]);
+        initialOffsetMs = (percent / 100) * totalDuration;
+      } else {
+        const timeMs = parseDuration(props.startAt);
+        if (timeMs !== null) {
+          initialOffsetMs = timeMs;
+        }
+      }
+    }
+
     let startTime: number | null = null;
 
     const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
+      if (!startTime) startTime = timestamp - initialOffsetMs;
       const elapsed = timestamp - startTime;
       const timePercent = ((elapsed % totalDuration) / totalDuration) * 100;
 
@@ -316,7 +350,7 @@ const containerStyle = computed(() => ({
         left: '0',
         width: '100%',
         height: '100%',
-        objectFit: 'contain',
+        objectFit: 'cover',
         opacity: index === 0 ? 1 : 0
       }"
     />
@@ -335,6 +369,7 @@ export const generateSvelteComponent = (data: TemplateData): string => {
   export let milestones: number[] = ${JSON.stringify(milestones)};
   export let className: string = '${config.className}';
   export let isCycling: boolean = ${config.isCycling};
+  export let startAt: string = '${config.startAt}';
 
   let containerRef: HTMLDivElement;
   let aspectRatio = '16 / 9';
@@ -362,7 +397,7 @@ export const generateSvelteComponent = (data: TemplateData): string => {
     const keyframes = [
       [0, 0],
       ...milestones.map((timePercent, index) => {
-        const sliderValue = ((index + 1) / milestones.length) * 100;
+        const sliderValue = ((index + 1) / (images.length - 1)) * 100;
         return [timePercent, sliderValue];
       }),
     ];
@@ -377,10 +412,25 @@ export const generateSvelteComponent = (data: TemplateData): string => {
     firstImg.onload = () => {
       aspectRatio = \`\${firstImg.naturalWidth} / \${firstImg.naturalHeight}\`;
 
+      // Calculate initial offset based on startAt
+      let initialOffsetMs = 0;
+      if (startAt) {
+        const percentMatch = startAt.match(/^(\\d+(\\.\\d+)?)%?$/);
+        if (percentMatch) {
+          const percent = parseFloat(percentMatch[1]);
+          initialOffsetMs = (percent / 100) * totalDuration;
+        } else {
+          const timeMs = parseDuration(startAt);
+          if (timeMs !== null) {
+            initialOffsetMs = timeMs;
+          }
+        }
+      }
+
       let startTime: number | null = null;
 
       const animate = (timestamp: number) => {
-        if (!startTime) startTime = timestamp;
+        if (!startTime) startTime = timestamp - initialOffsetMs;
         const elapsed = timestamp - startTime;
         const timePercent = ((elapsed % totalDuration) / totalDuration) * 100;
 
@@ -451,7 +501,7 @@ export const generateSvelteComponent = (data: TemplateData): string => {
     <img
       {src}
       alt="Image {index + 1}"
-      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; opacity: {index === 0 ? 1 : 0};"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: {index === 0 ? 1 : 0};"
     />
   {/each}
 </div>`;

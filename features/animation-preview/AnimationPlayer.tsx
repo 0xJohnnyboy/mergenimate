@@ -53,15 +53,33 @@ export const AnimationPlayer: React.FC = () => {
 
     const keyframes = [
       [0, 0],
-      ...parsedMilestones.map((timePercent, index) => [timePercent, ((index + 1) / (images.length - 1)) * 100]),
+      ...parsedMilestones.map((timePercent, index) => {
+        const sliderValue = ((index + 1) / (images.length - 1)) * 100;
+        return [timePercent, sliderValue];
+      }),
     ];
     if (keyframes.length === 1 || keyframes[keyframes.length - 1][0] < 100) {
       keyframes.push([100, 100]);
     }
 
+    // Calculate initial offset based on startAt config
+    let initialOffsetMs = 0;
+    if (config.startAt) {
+      const percentMatch = config.startAt.match(/^(\d+(\.\d+)?)%?$/);
+      if (percentMatch) {
+        const percent = parseFloat(percentMatch[1]);
+        initialOffsetMs = (percent / 100) * totalDuration;
+      } else {
+        const timeMs = parseDuration(config.startAt);
+        if (timeMs !== null) {
+          initialOffsetMs = timeMs;
+        }
+      }
+    }
+
     const animate = (timestamp: number) => {
       if (!animationStartTime.current) {
-        animationStartTime.current = timestamp;
+        animationStartTime.current = timestamp - initialOffsetMs;
       }
       const elapsed = timestamp - animationStartTime.current;
       const timePercent = ((elapsed % totalDuration) / totalDuration) * 100;
@@ -94,7 +112,7 @@ export const AnimationPlayer: React.FC = () => {
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [isAnimating, config.duration, config.milestones, images.length, setSliderValue, stopAnimation]);
+  }, [isAnimating, config.duration, config.milestones, config.startAt, images.length, setSliderValue, stopAnimation]);
 
   const imageContainerStyle = useMemo(() => {
     if (images.length === 0) return {};
@@ -115,7 +133,7 @@ export const AnimationPlayer: React.FC = () => {
               key={images[lowerIndex].src}
               src={images[lowerIndex].src}
               alt={`Uploaded image ${lowerIndex + 1}`}
-              className="absolute top-0 left-0 w-full h-full object-contain"
+              className="absolute top-0 left-0 w-full h-full object-cover"
               style={{ opacity: 1, zIndex: 1, transition: 'opacity 0.1s ease-in-out' }}
             />
             {lowerIndex !== upperIndex && (
@@ -123,7 +141,7 @@ export const AnimationPlayer: React.FC = () => {
                 key={images[upperIndex].src}
                 src={images[upperIndex].src}
                 alt={`Uploaded image ${upperIndex + 1}`}
-                className="absolute top-0 left-0 w-full h-full object-contain"
+                className="absolute top-0 left-0 w-full h-full object-cover"
                 style={{ opacity: fade, zIndex: 2, transition: 'opacity 0.1s ease-in-out' }}
               />
             )}

@@ -13,6 +13,7 @@ export const generateEmbedContent = (): string => {
   const imageUrlsStr = scriptTag.dataset.images;
   const customClass = scriptTag.dataset.class;
   const isCycling = scriptTag.dataset.cycle === 'true';
+  const startAtStr = scriptTag.dataset.startAt || '';
 
   if (!durationStr || !milestonesStr || !imageUrlsStr) {
     console.error("Mergenimate: Missing required data attributes (data-duration, data-milestones, data-images).");
@@ -56,7 +57,7 @@ export const generateEmbedContent = (): string => {
   const keyframes = [
     [0, 0],
     ...milestones.map((timePercent, index) => {
-      const sliderValue = ((index + 1) / (milestones.length)) * 100;
+      const sliderValue = ((index + 1) / (imageUrls.length - 1)) * 100;
       return [timePercent, sliderValue];
     })
   ];
@@ -89,16 +90,31 @@ export const generateEmbedContent = (): string => {
         img.style.left = '0';
         img.style.width = '100%';
         img.style.height = '100%';
-        img.style.objectFit = 'contain';
+        img.style.objectFit = 'cover';
         img.style.opacity = index === 0 ? '1' : '0';
         imageElements.push(img);
         container.appendChild(img);
       });
 
+      // Calculate initial offset based on startAt parameter
+      let initialOffsetMs = 0;
+      if (startAtStr) {
+        const percentMatch = startAtStr.match(/^(\\d+(\\.\\d+)?)%?$/);
+        if (percentMatch) {
+          const percent = parseFloat(percentMatch[1]);
+          initialOffsetMs = (percent / 100) * totalDuration;
+        } else {
+          const timeMs = parseDuration(startAtStr);
+          if (timeMs !== null) {
+            initialOffsetMs = timeMs;
+          }
+        }
+      }
+
       let startTime = null;
 
       function animate(timestamp) {
-        if (!startTime) startTime = timestamp;
+        if (!startTime) startTime = timestamp - initialOffsetMs;
         const elapsed = timestamp - startTime;
         const timePercent = ((elapsed % totalDuration) / totalDuration) * 100;
 
