@@ -21,6 +21,7 @@ describe('AnimationControls', () => {
         imagePrefix: '/images/slider-',
         className: '',
         isCycling: false,
+        startAt: '',
       },
     });
   });

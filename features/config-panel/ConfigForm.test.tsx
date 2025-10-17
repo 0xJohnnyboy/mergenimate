@@ -22,6 +22,7 @@ describe('ConfigForm', () => {
         imagePrefix: '/images/slider-',
         className: '',
         isCycling: false,
+        startAt: '',
       },
     });
   });

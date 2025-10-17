@@ -20,6 +20,7 @@ describe('useEmbedCode', () => {
         imagePrefix: '/images/slider-',
         className: '',
         isCycling: false,
+        startAt: '',
       },
     });
   });
@@ -39,6 +40,7 @@ describe('useEmbedCode', () => {
         imagePrefix: '/img/test-',
         className: 'custom-class',
         isCycling: true,
+        startAt: '',
       });
     });
 
@@ -62,6 +64,7 @@ describe('useEmbedCode', () => {
         imagePrefix: '/img/test-',
         className: '',
         isCycling: false,
+        startAt: '',
       });
     });
 
