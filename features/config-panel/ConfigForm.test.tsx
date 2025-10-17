@@ -18,6 +18,7 @@ describe('ConfigForm', () => {
         milestones: ['50'],
         timeMilestoneInputs: [''],
         milestoneMode: 'percentage',
+        framework: 'script',
         imagePrefix: '/images/slider-',
         className: '',
         isCycling: false,
