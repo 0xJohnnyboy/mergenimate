@@ -17,19 +17,21 @@ export const Drawer: React.FC<PropsWithChildren<DrawerProps>> = ({ isOpen, onClo
       aria-hidden={!isOpen}
     >
       <div
-        className="absolute inset-0 bg-gray-900 bg-opacity-75 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 backdrop-blur-sm"
         onClick={onClose}
-      ></div>
+      >
+        <div className="absolute inset-0 bg-base-content opacity-30"></div>
+      </div>
       <div className="fixed inset-y-0 right-0 flex max-w-full pl-10 z-50">
         <div className={`transform transition-transform ease-in-out duration-300 w-screen max-w-md ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-          <div className="flex h-full flex-col overflow-y-scroll bg-gray-800 border-l border-gray-700 shadow-xl p-6">
-            <div className="flex items-start justify-between">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2" id="slide-over-title">
+          <div className="flex h-full flex-col overflow-y-scroll bg-base-200 border-l border-base-300 shadow-xl p-6">
+            <div className="flex items-start justify-between mb-4">
+              <h2 className="text-xl font-bold flex items-center gap-2" id="slide-over-title">
                 {title}
               </h2>
               <button
                 type="button"
-                className="p-1 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                className="p-2 rounded-full hover:bg-base-300 transition-colors"
                 onClick={onClose}
               >
                 <span className="sr-only">Close panel</span>
