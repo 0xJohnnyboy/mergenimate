@@ -36,6 +36,7 @@ const initialConfig: AnimationConfig = {
   milestones: [],
   timeMilestoneInputs: [],
   milestoneMode: 'percentage',
+  framework: 'script',
   imagePrefix: '/images/slider-',
   className: '',
   isCycling: false,

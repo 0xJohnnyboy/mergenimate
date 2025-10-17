@@ -8,6 +8,7 @@ export const configSchema = z.object({
   milestones: z.array(z.object({ value: z.string() })),
   timeMilestoneInputs: z.array(z.object({ value: z.string() })),
   milestoneMode: z.enum(['percentage', 'time']),
+  framework: z.enum(['script', 'react', 'vue', 'svelte']),
   imagePrefix: z.string().nonempty('Image prefix is required.'),
   className: z.string(),
   isCycling: z.boolean(),
