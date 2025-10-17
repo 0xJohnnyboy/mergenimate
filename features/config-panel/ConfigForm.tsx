@@ -65,17 +65,17 @@ export const ConfigForm: React.FC<ConfigFormProps> = ({ onGenerate, scriptError 
         />
         
         <div>
-            <span className="block text-sm font-medium text-gray-300 mb-2">Milestone Format</span>
+            <span className="block text-sm font-medium mb-2">Milestone Format</span>
             <div className="flex rounded-md shadow-sm">
                 <Controller
                     name="milestoneMode"
                     control={control}
                     render={({ field }) => (
                         <>
-                            <button type="button" onClick={() => { field.onChange('percentage'); setMilestoneMode('percentage'); }} className={`relative inline-flex items-center justify-center px-4 py-2 rounded-l-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:border-brand-primary transition-colors duration-150 ${field.value === 'percentage' ? 'bg-brand-primary border-brand-primary text-white' : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600'}`}>
+                            <button type="button" onClick={() => { field.onChange('percentage'); setMilestoneMode('percentage'); }} className={`relative inline-flex items-center justify-center px-4 py-2 rounded-l-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150 ${field.value === 'percentage' ? 'bg-primary border-primary text-primary-content' : 'bg-base-200 border-base-300 hover:bg-base-300'}`}>
                             Percentage (%)
                             </button>
-                            <button type="button" onClick={() => { field.onChange('time'); setMilestoneMode('time'); }} className={`-ml-px relative inline-flex items-center justify-center px-4 py-2 rounded-r-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:border-brand-primary transition-colors duration-150 ${field.value === 'time' ? 'bg-brand-primary border-brand-primary text-white' : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600'}`}>
+                            <button type="button" onClick={() => { field.onChange('time'); setMilestoneMode('time'); }} className={`-ml-px relative inline-flex items-center justify-center px-4 py-2 rounded-r-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150 ${field.value === 'time' ? 'bg-primary border-primary text-primary-content' : 'bg-base-200 border-base-300 hover:bg-base-300'}`}>
                             Time
                             </button>
                         </>
@@ -128,14 +128,14 @@ export const ConfigForm: React.FC<ConfigFormProps> = ({ onGenerate, scriptError 
                     id="isCycling"
                     type="checkbox"
                     {...register('isCycling')}
-                    className="h-4 w-4 rounded border-gray-500 bg-gray-700 text-brand-primary focus:ring-brand-secondary"
+                    className="h-4 w-4 rounded border-base-300 bg-base-200 text-primary focus:ring-primary"
                 />
             </div>
             <div className="ml-3 text-sm">
-                <label htmlFor="isCycling" className="font-medium text-gray-300">
+                <label htmlFor="isCycling" className="font-medium">
                 Cycle Animation
                 </label>
-                <p id="cycle-description" className="text-xs text-gray-500">
+                <p id="cycle-description" className="text-xs opacity-60">
                 Smoothly transition from the last image back to the first.
                 </p>
             </div>
@@ -148,7 +148,7 @@ export const ConfigForm: React.FC<ConfigFormProps> = ({ onGenerate, scriptError 
         </div>
         
         {scriptError && (
-            <div className="mt-4 max-w-2xl mx-auto bg-red-900 border border-red-700 text-red-200 px-4 py-2 rounded-lg text-sm">
+            <div className="mt-4 max-w-2xl mx-auto alert alert-error text-sm">
                 {scriptError}
             </div>
         )}
