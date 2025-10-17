@@ -25,8 +25,11 @@ class ScriptTagGenerator implements CodeGenerator {
       ? ` data-class="${config.className.trim().replace(/"/g, '&quot;')}"`
       : '';
     const cycleAttr = config.isCycling ? ` data-cycle="true"` : '';
+    const startAtAttr = config.startAt && config.startAt.trim()
+      ? ` data-start-at="${config.startAt.trim().replace(/"/g, '&quot;')}"`
+      : '';
 
-    return `<script src="${scriptSrc}" data-duration="${config.duration}" data-milestones='${JSON.stringify(milestones)}' data-images='${JSON.stringify(imageUrls)}'${classAttr}${cycleAttr}></script>`;
+    return `<script src="${scriptSrc}" data-duration="${config.duration}" data-milestones='${JSON.stringify(milestones)}' data-images='${JSON.stringify(imageUrls)}'${classAttr}${cycleAttr}${startAtAttr}></script>`;
   }
 }
 
