@@ -48,7 +48,7 @@ describe('ConfigForm', () => {
     render(<ConfigForm onGenerate={mockOnGenerate} scriptError={null} />);
 
     const button = screen.getByRole('button', { name: /generate embed code/i });
-    expect(button).toHaveClass('bg-brand-primary');
-    expect(button).toHaveClass('text-white');
+    expect(button).toHaveClass('bg-primary');
+    expect(button).toHaveClass('text-primary-content');
   });
 });

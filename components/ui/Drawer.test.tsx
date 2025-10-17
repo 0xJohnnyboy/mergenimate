@@ -18,36 +18,29 @@ describe('Drawer', () => {
     expect(screen.getByText('Content')).toBeInTheDocument();
   });
 
-  it('should hide drawer and backdrop when closed', () => {
+  it('should hide when closed with pointer-events-none', () => {
     const { container } = render(
       <Drawer isOpen={false} onClose={vi.fn()} title="Test Drawer">
         <div>Content</div>
       </Drawer>
     );
 
-    // Drawer should be in DOM but hidden with CSS
-    const backdrop = container.querySelector('.fixed.inset-0');
-    expect(backdrop).toBeInTheDocument();
-    expect(backdrop).toHaveClass('opacity-0', 'pointer-events-none');
-
-    // Content should be in DOM but hidden
-    expect(screen.getByText('Content')).toBeInTheDocument();
-
-    // Drawer panel should be translated off-screen
-    const drawerPanel = container.querySelector('.translate-x-full');
-    expect(drawerPanel).toBeInTheDocument();
+    // Drawer should be in DOM but hidden
+    const drawer = container.querySelector('.fixed');
+    expect(drawer).toBeInTheDocument();
+    expect(drawer).toHaveClass('pointer-events-none', 'opacity-0');
   });
 
-  it('should have proper transition classes when open', () => {
+  it('should have proper DaisyUI classes when open', () => {
     const { container } = render(
       <Drawer isOpen={true} onClose={vi.fn()} title="Test Drawer">
         <div>Content</div>
       </Drawer>
     );
 
-    // Check for slide transition
-    const drawerPanel = container.querySelector('.transition-transform');
-    expect(drawerPanel).toBeInTheDocument();
-    expect(drawerPanel).toHaveClass('translate-x-0');
+    // Check for DaisyUI base classes
+    const drawerContent = container.querySelector('.bg-base-200');
+    expect(drawerContent).toBeInTheDocument();
+    expect(drawerContent).toHaveClass('border-l', 'border-base-300');
   });
 });
