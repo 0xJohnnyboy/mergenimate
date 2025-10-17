@@ -40,6 +40,7 @@ const initialConfig: AnimationConfig = {
   imagePrefix: '/images/slider-',
   className: '',
   isCycling: false,
+  startAt: '',
 };
 
 const getInitialMilestones = (imageCount: number): { milestones: string[], timeMilestoneInputs: string[] } => {

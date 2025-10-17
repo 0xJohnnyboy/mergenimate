@@ -18,4 +18,5 @@ export interface AnimationConfig {
   imagePrefix: string;
   className: string;
   isCycling: boolean;
+  startAt: string; // Can be percentage (e.g., "50" or "50%") or time (e.g., "30s")
 }

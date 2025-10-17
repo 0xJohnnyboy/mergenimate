@@ -12,6 +12,7 @@ export const configSchema = z.object({
   imagePrefix: z.string().nonempty('Image prefix is required.'),
   className: z.string(),
   isCycling: z.boolean(),
+  startAt: z.string(),
 }).superRefine((data, ctx) => {
     // Use the duration from the form data itself for validation
     const totalDurationMs = parseDuration(data.duration); 
@@ -66,6 +67,26 @@ export const configSchema = z.object({
         }
         
         prevPercent = currentPercent;
+    }
+
+    // Validate startAt field if provided
+    if (data.startAt) {
+        // Try parsing as percentage first (e.g., "50" or "50%")
+        const percentMatch = data.startAt.match(/^(\d+(\.\d+)?)%?$/);
+        if (percentMatch) {
+            const percent = parseFloat(percentMatch[1]);
+            if (isNaN(percent) || percent < 0 || percent > 100) {
+                ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Must be between 0% and 100%", path: ['startAt'] });
+            }
+        } else {
+            // Try parsing as time format
+            const timeMs = parseDuration(data.startAt);
+            if (timeMs === null) {
+                ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Invalid format. Use percentage (e.g., 50%) or time (e.g., 30s)", path: ['startAt'] });
+            } else if (timeMs > totalDurationMs) {
+                ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Exceeds total duration", path: ['startAt'] });
+            }
+        }
     }
 });
 

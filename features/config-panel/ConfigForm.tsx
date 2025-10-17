@@ -57,13 +57,21 @@ export const ConfigForm: React.FC<ConfigFormProps> = ({ onGenerate, scriptError 
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto grid grid-cols-1 gap-y-6">
-        <Input 
+        <Input
             label="Total Duration"
             {...register('duration')}
             error={errors.duration?.message}
             placeholder="e.g., 30s, 10m, 24h"
         />
-        
+
+        <Input
+            label="Start At (optional)"
+            {...register('startAt')}
+            error={errors.startAt?.message}
+            placeholder="e.g., 50% or 30s"
+            description="Start the animation at a specific position (percentage or time)."
+        />
+
         <div>
             <span className="block text-sm font-medium mb-2">Output Format</span>
             <div className="flex rounded-md shadow-sm mb-4">
