@@ -10,13 +10,15 @@ interface AppState {
   isAnimating: boolean;
   isLoading: boolean;
   error: string | null;
+  generatedEmbedTag: string | null;
+  scriptError: string | null;
 
   // Actions
   addImages: (files: FileList | null) => Promise<void>;
   removeImage: (id: string) => void;
   reorderImages: (dragIndex: number, dropIndex: number) => void;
   reset: () => void;
-  
+
   setConfig: (newConfig: Partial<AnimationConfig>) => void;
   setMilestoneMode: (mode: MilestoneMode) => void;
   handleTimeMilestoneChange: (index: number, value: string) => void;
@@ -24,6 +26,9 @@ interface AppState {
   setSliderValue: (value: number) => void;
   toggleAnimation: () => void;
   stopAnimation: () => void;
+
+  setGeneratedEmbedTag: (tag: string | null) => void;
+  setScriptError: (error: string | null) => void;
 }
 
 const initialConfig: AnimationConfig = {
@@ -55,6 +60,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   isAnimating: false,
   isLoading: false,
   error: null,
+  generatedEmbedTag: null,
+  scriptError: null,
 
   addImages: async (files) => {
     if (!files || files.length === 0) return;
@@ -152,6 +159,9 @@ export const useAppStore = create<AppState>((set, get) => ({
   setSliderValue: (value) => set({ sliderValue: value }),
   toggleAnimation: () => set(state => ({ isAnimating: !state.isAnimating })),
   stopAnimation: () => set({ isAnimating: false }),
+
+  setGeneratedEmbedTag: (tag) => set({ generatedEmbedTag: tag }),
+  setScriptError: (error) => set({ scriptError: error }),
 }));
 
 // Helper to get a clean initial state for reset
@@ -160,4 +170,6 @@ const getInitialState = () => ({
     isAnimating: false,
     isLoading: false,
     error: null,
+    generatedEmbedTag: null,
+    scriptError: null,
 });

@@ -21,7 +21,7 @@ export const ConfigDrawer: React.FC<ConfigDrawerProps> = ({ isOpen, onClose }) =
         <Drawer
             isOpen={isOpen}
             onClose={onClose}
-            title={<><CodeIcon className="h-6 w-6" /> Generate Embed Code</>}
+            title={<><CodeIcon className="h-6 w-6 bg-gray-800 p-1" /> Animation Configuration</>}
         >
             <div className="relative mt-6 flex-1 px-4 sm:px-0">
                 {!hasImages ? (

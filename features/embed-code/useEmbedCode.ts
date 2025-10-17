@@ -1,18 +1,20 @@
-import { useState } from 'react';
 import { useAppStore } from '../../store';
 import { generateEmbedContent } from './embedScriptTemplate';
 import { getExtensionFromDataUri } from '../../services/imageProcessor';
 import { AnimationConfigFormData } from '../config-panel/configSchema';
 
 export const useEmbedCode = () => {
-  const { images, setConfig } = useAppStore(state => ({
+  const { images, setConfig, generatedEmbedTag, scriptError, setGeneratedEmbedTag, setScriptError } = useAppStore(state => ({
     images: state.images,
     setConfig: state.setConfig,
+    generatedEmbedTag: state.generatedEmbedTag,
+    scriptError: state.scriptError,
+    setGeneratedEmbedTag: state.setGeneratedEmbedTag,
+    setScriptError: state.setScriptError,
   }));
-  const [generatedEmbedTag, setGeneratedEmbedTag] = useState<string | null>(null);
-  const [scriptError, setScriptError] = useState<string | null>(null);
 
   const generateCode = (data: AnimationConfigFormData) => {
+    console.log('generateCode called with:', data);
     setScriptError(null);
     setGeneratedEmbedTag(null);
 
@@ -22,6 +24,7 @@ export const useEmbedCode = () => {
         milestones: data.milestones.map(m => m.value),
         timeMilestoneInputs: data.timeMilestoneInputs.map(t => t.value),
     };
+    console.log('Setting config:', newConfig);
     setConfig(newConfig);
 
     // 2. Use the sanitized data to generate the embed code
@@ -36,7 +39,8 @@ export const useEmbedCode = () => {
     const classAttr = newConfig.className.trim() ? ` data-class="${newConfig.className.trim().replace(/"/g, '&quot;')}"` : '';
     const cycleAttr = newConfig.isCycling ? ` data-cycle="true"` : '';
     const embedTag = `<script src="${scriptSrc}" data-duration="${newConfig.duration}" data-milestones='${JSON.stringify(parsedMilestones)}' data-images='${JSON.stringify(imageUrls)}'${classAttr}${cycleAttr}></script>`;
-    
+
+    console.log('Generated embed tag:', embedTag);
     setGeneratedEmbedTag(embedTag);
   };
 

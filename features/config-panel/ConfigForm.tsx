@@ -50,8 +50,13 @@ export const ConfigForm: React.FC<ConfigFormProps> = ({ onGenerate, scriptError 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [images.length, reset]);
 
+  const onSubmit = (data: AnimationConfigFormData) => {
+    console.log('Form submitted with data:', data);
+    onGenerate(data);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onGenerate)} className="max-w-2xl mx-auto grid grid-cols-1 gap-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto grid grid-cols-1 gap-y-6">
         <Input 
             label="Total Duration"
             {...register('duration')}

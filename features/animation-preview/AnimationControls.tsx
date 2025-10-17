@@ -43,16 +43,16 @@ export const AnimationControls: React.FC = () => {
   }, [sliderValue, images.length, config.isCycling]);
 
   return (
-    <div className="mt-8 flex items-center gap-4">
-      <button
-        onClick={toggleAnimation}
-        className={`p-2 rounded-full transition-colors duration-200 ${isAnimating ? 'text-yellow-400 hover:text-yellow-300' : 'text-green-400 hover:text-green-300'}`}
-        aria-label={isAnimating ? 'Stop animation' : 'Run animation'}
-      >
-        {isAnimating ? <StopIcon /> : <PlayIcon />}
-      </button>
-      <div className="flex-grow">
-        <div className="text-center mb-2 text-gray-400 font-mono text-sm">{sliderLabel}</div>
+    <div className="mt-8">
+      <div className="text-center mb-3 text-gray-400 font-mono text-sm">{sliderLabel}</div>
+      <div className="flex items-center gap-4">
+        <button
+          onClick={toggleAnimation}
+          className={`p-2 rounded-full transition-colors duration-200 flex-shrink-0 ${isAnimating ? 'text-yellow-400 hover:text-yellow-300' : 'text-green-400 hover:text-green-300'}`}
+          aria-label={isAnimating ? 'Stop animation' : 'Run animation'}
+        >
+          {isAnimating ? <StopIcon /> : <PlayIcon />}
+        </button>
         <input
           type="range"
           min="0"
@@ -60,7 +60,7 @@ export const AnimationControls: React.FC = () => {
           step="0.1"
           value={sliderValue}
           onChange={(e) => setSliderValue(Number(e.target.value))}
-          className="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg accent-brand-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-grow h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg accent-brand-primary disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Image merge slider"
           disabled={isAnimating}
         />
